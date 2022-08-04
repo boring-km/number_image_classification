@@ -102,6 +102,6 @@ class Classifier(
     }
 
     companion object {
-        private const val MODEL_NAME = "keras_model.tflite"
+        private const val MODEL_NAME = "keras_model_cnn.tflite"
     }
 }
