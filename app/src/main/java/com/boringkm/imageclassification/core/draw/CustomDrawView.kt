@@ -1,4 +1,4 @@
-package com.boringkm.imageclassification.presentation
+package com.boringkm.imageclassification.core.draw
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,8 +11,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
-import com.boringkm.imageclassification.core.draw.DrawPath
-import com.boringkm.imageclassification.core.draw.PaintOptions
+import com.boringkm.imageclassification.core.draw.DrawController
 import java.util.LinkedHashMap
 
 @SuppressLint("ViewConstructor")
@@ -43,10 +42,11 @@ class CustomDrawView(context: Context, attrs: AttributeSet?, controller: DrawCon
             isAntiAlias = true
         }
 
-        controller.setBitmap(this);
+        controller.setBitmap(this)
     }
 
     fun undo() {
+        @Suppress("UNCHECKED_CAST")
         if (mPaths.isEmpty() && mLastPaths.isNotEmpty()) {
             mPaths = mLastPaths.clone() as LinkedHashMap<DrawPath, PaintOptions>
             mLastPaths.clear()
@@ -131,6 +131,7 @@ class CustomDrawView(context: Context, attrs: AttributeSet?, controller: DrawCon
     }
 
     fun clearCanvas() {
+        @Suppress("UNCHECKED_CAST")
         mLastPaths = mPaths.clone() as LinkedHashMap<DrawPath, PaintOptions>
         mPath.reset()
         mPaths.clear()
@@ -165,6 +166,7 @@ class CustomDrawView(context: Context, attrs: AttributeSet?, controller: DrawCon
         mPaintOptions = PaintOptions(mPaintOptions.color, mPaintOptions.strokeWidth, mPaintOptions.alpha)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val x = event.x
         val y = event.y
