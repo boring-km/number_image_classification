@@ -2,11 +2,13 @@ package com.boringkm.imageclassification.tflite
 
 import android.content.Context
 import android.graphics.Bitmap
+import com.boringkm.imageclassification.core.argmax
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 
 class Classifier(
@@ -45,19 +47,6 @@ class Classifier(
         val result = Array(1) { FloatArray(modelOutputClasses) }
         interpreter?.run(buffer, result)
         return argmax(result[0])
-    }
-
-    private fun argmax(array: FloatArray): Pair<Int, Float> {
-        var argmax = 0
-        var max = array[0]
-        for (i in 1 until array.size) {
-            val f = array[i]
-            if (f > max) {
-                argmax = i
-                max = f
-            }
-        }
-        return Pair(argmax, max)
     }
 
     private fun resizeBitmap(bitmap: Bitmap): Bitmap {
