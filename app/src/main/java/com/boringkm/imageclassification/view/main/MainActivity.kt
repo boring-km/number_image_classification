@@ -1,4 +1,4 @@
-package com.boringkm.imageclassification.presentation
+package com.boringkm.imageclassification.view.main
 
 import android.content.Intent
 import android.graphics.Color
@@ -21,6 +21,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.boringkm.imageclassification.core.draw.CustomDrawView
 import com.boringkm.imageclassification.core.draw.DrawController
 import com.boringkm.imageclassification.ui.theme.ImageClassificationTheme
+import com.boringkm.imageclassification.view.camera.CameraActivity
+import com.boringkm.imageclassification.view.gallery.GalleryActivity
 
 class MainActivity : ComponentActivity() {
 

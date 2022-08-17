@@ -1,4 +1,4 @@
-package com.boringkm.imageclassification.presentation
+package com.boringkm.imageclassification.view.gallery
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -57,7 +57,7 @@ class GalleryActivity: ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initClassifierWithModel()
+        initClassifier()
         setContent {
             ImageClassificationTheme {
                 // A surface container using the 'background' color from the theme
@@ -86,7 +86,13 @@ class GalleryActivity: ComponentActivity() {
         }
     }
 
-    private fun initClassifierWithModel() {
+    override fun onDestroy() {
+        classifier.finish()
+        super.onDestroy()
+    }
+
+
+    private fun initClassifier() {
         classifier = ClassifierWithModel(this, ClassifierWithModel.IMAGENET_CLASSIFY_MODEL)
         try {
             classifier.init()

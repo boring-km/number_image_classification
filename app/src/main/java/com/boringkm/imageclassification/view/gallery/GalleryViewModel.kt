@@ -1,4 +1,4 @@
-package com.boringkm.imageclassification.presentation
+package com.boringkm.imageclassification.view.gallery
 
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData

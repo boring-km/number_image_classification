@@ -1,4 +1,4 @@
-package com.boringkm.imageclassification.presentation
+package com.boringkm.imageclassification.view.camera
 
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -18,6 +18,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -74,7 +75,7 @@ class CameraActivity: ComponentActivity() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Image(
-                            bitmap = viewModel.resultBitmap.value!!.asImageBitmap(),
+                            bitmap = viewModel.resultBitmap.observeAsState().value!!.asImageBitmap(),
                             contentDescription = "image",
                         )
                         Button(
@@ -87,7 +88,7 @@ class CameraActivity: ComponentActivity() {
                         ) {
                             Text("Take Photo")
                         }
-                        Text("Result: ${viewModel.resultText.value}")
+                        Text("Result: ${viewModel.resultText.observeAsState().value}")
                     }
                 }
             }

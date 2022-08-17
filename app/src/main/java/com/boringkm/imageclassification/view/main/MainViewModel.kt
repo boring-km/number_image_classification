@@ -1,4 +1,4 @@
-package com.boringkm.imageclassification.presentation
+package com.boringkm.imageclassification.view.main
 
 import android.app.Application
 import android.util.Log

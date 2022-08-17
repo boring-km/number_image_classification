@@ -18,7 +18,7 @@
         android:theme="@style/Theme.ImageClassification"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".view.main.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.ImageClassification">
             <intent-filter>
@@ -27,8 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.GalleryActivity"/>
-        <activity android:name=".presentation.CameraActivity"/>
+        <activity android:name=".view.gallery.GalleryActivity"/>
+        <activity android:name=".view.camera.CameraActivity"/>
 
         <provider
                 android:name="androidx.core.content.FileProvider"
