@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.boringkm.imageclassification.core.draw.DrawController
 import com.boringkm.imageclassification.tflite.Classifier
-import com.boringkm.imageclassification.tflite.ClassifierWithSupport
 import java.io.IOException
 import java.util.*
 import javax.inject.Inject
@@ -15,13 +14,13 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(application: Application): AndroidViewModel(application) {
 
-    private lateinit var cls: ClassifierWithSupport
+    private lateinit var cls: Classifier
     private val _resultText = MutableLiveData("")
     val resultText: LiveData<String> = _resultText
 
     init {
         try {
-            cls = ClassifierWithSupport(application.applicationContext)
+            cls = Classifier(application.applicationContext)
             cls.init()
         } catch (e: IOException) {
             Log.e("DigitClassifier", "failed to init Classifier", e)

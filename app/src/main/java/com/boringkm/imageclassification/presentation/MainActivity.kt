@@ -1,5 +1,6 @@
 package com.boringkm.imageclassification.presentation
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -53,6 +54,20 @@ class MainActivity : ComponentActivity() {
             DrawingView(drawController)
             TwoButtons(drawController)
             ResultText()
+            Button(
+                onClick = {
+                    startActivity(Intent(this@MainActivity, GalleryActivity::class.java))
+                }
+            ) {
+                Text("Gallery")
+            }
+            Button(
+                onClick = {
+                    startActivity(Intent(this@MainActivity, CameraActivity::class.java))
+                }
+            ) {
+                Text("Camera")
+            }
         }
     }
 
