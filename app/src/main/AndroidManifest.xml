@@ -4,12 +4,14 @@
     package="com.boringkm.imageclassification">
 
     <uses-feature
-            android:name="android.hardware.camera"
-            android:required="true" />
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+<!--    <uses-permission android:name="android.permission.CAMERA" />-->
 
     <application
-        android:allowBackup="true"
         android:name=".ImageClassificationApp"
+        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -28,17 +30,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.gallery.GalleryActivity"/>
-        <activity android:name=".view.camera.CameraActivity"/>
+        <activity android:name=".view.gallery.GalleryActivity" />
+        <activity android:name=".view.camera.CameraActivity" />
 
         <provider
-                android:name="androidx.core.content.FileProvider"
-                android:authorities="${applicationId}.provider"
-                android:exported="false"
-                android:grantUriPermissions="true">
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/provider_paths" />
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
         </provider>
     </application>
 
