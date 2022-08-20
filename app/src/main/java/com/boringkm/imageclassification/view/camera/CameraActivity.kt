@@ -1,6 +1,5 @@
 package com.boringkm.imageclassification.view.camera
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,28 +16,22 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.core.content.FileProvider
-import com.boringkm.imageclassification.BuildConfig
 import com.boringkm.imageclassification.ui.theme.ImageClassificationTheme
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
 
 @AndroidEntryPoint
-class CameraActivity: ComponentActivity() {
+class CameraActivity : ComponentActivity() {
 
     private val viewModel: CameraViewModel by viewModels()
-    private var imageUri: Uri? = null
     private val cameraResult =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess: Boolean ->
             if (isSuccess.not()) return@registerForActivityResult
-            val selectedImage = imageUri ?: return@registerForActivityResult
-
-            viewModel.processResult(selectedImage, contentResolver)
+            viewModel.processResult(contentResolver)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.init()
+        viewModel.init(cameraResult)
 
         setContent {
             ImageClassificationTheme {
@@ -56,10 +49,7 @@ class CameraActivity: ComponentActivity() {
                         )
                         Button(
                             onClick = {
-                                getTmpFileUri().let { uri ->
-                                    imageUri = uri
-                                    cameraResult.launch(uri)
-                                }
+                                viewModel.takePhoto(cameraResult)
                             }
                         ) {
                             Text("Take Photo")
@@ -74,13 +64,5 @@ class CameraActivity: ComponentActivity() {
     override fun onDestroy() {
         viewModel.finish()
         super.onDestroy()
-    }
-
-    private fun getTmpFileUri(): Uri {
-        val tmpFile = File.createTempFile("tmp_image_file", ".png", cacheDir).apply {
-            createNewFile()
-            deleteOnExit()
-        }
-        return FileProvider.getUriForFile(applicationContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile)
     }
 }

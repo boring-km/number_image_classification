@@ -16,10 +16,6 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideTFLiteModel(model: Model): Model = model
-
-    @Singleton
-    @Provides
     fun provideModelProvider(@ApplicationContext context: Context): ClassifierWithModel =
         ClassifierWithModel(context, ClassifierWithModel.IMAGENET_CLASSIFY_MODEL)
 }
