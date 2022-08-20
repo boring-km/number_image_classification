@@ -49,6 +49,10 @@ class MainViewModel @Inject constructor(application: Application) : AndroidViewM
         _resultText.value = result
     }
 
+    fun moveWithCameraPermission(permissionLauncher: ActivityResultLauncher<String>) {
+        permissionLauncher.launch(Manifest.permission.CAMERA)
+    }
+
     companion object {
         const val PERMISSION_CAMERA_CODE = 11
     }

@@ -27,6 +27,7 @@ import com.boringkm.imageclassification.core.draw.DrawController
 import com.boringkm.imageclassification.ui.theme.ImageClassificationTheme
 import com.boringkm.imageclassification.view.camera.CameraActivity
 import com.boringkm.imageclassification.view.gallery.GalleryActivity
+import com.boringkm.imageclassification.view.realtime.RealTimeActivity
 
 class MainActivity : ComponentActivity() {
 
@@ -36,6 +37,19 @@ class MainActivity : ComponentActivity() {
             if (isGranted) {
                 Log.i("MainActivity", "PERMISSION GRANTED")
                 startActivity(Intent(this@MainActivity, CameraActivity::class.java))
+            } else {
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(Manifest.permission.CAMERA),
+                    MainViewModel.PERMISSION_CAMERA_CODE
+                )
+            }
+        }
+
+    private val realTimePermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                Log.i("MainActivity", "PERMISSION GRANTED")
+                startActivity(Intent(this@MainActivity, RealTimeActivity::class.java))
             } else {
                 ActivityCompat.requestPermissions(
                     this, arrayOf(Manifest.permission.CAMERA),
@@ -82,14 +96,14 @@ class MainActivity : ComponentActivity() {
             }
             Button(
                 onClick = {
-                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                    viewModel.moveWithCameraPermission(cameraPermissionLauncher)
                 }
             ) {
                 Text("Camera")
             }
             Button(
                 onClick = {
-//                    viewModel.moveToCameraRealTime(applicationContext)
+                    viewModel.moveWithCameraPermission(realTimePermissionLauncher)
                 }
             ) {
                 Text("Camera RealTime")

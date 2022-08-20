@@ -32,6 +32,7 @@
         </activity>
         <activity android:name=".view.gallery.GalleryActivity" />
         <activity android:name=".view.camera.CameraActivity" />
+        <activity android:name=".view.realtime.RealTimeActivity"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
