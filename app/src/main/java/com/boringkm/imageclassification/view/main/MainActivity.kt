@@ -27,7 +27,6 @@ import com.boringkm.imageclassification.core.draw.DrawController
 import com.boringkm.imageclassification.ui.theme.ImageClassificationTheme
 import com.boringkm.imageclassification.view.camera.CameraActivity
 import com.boringkm.imageclassification.view.gallery.GalleryActivity
-import com.boringkm.imageclassification.view.realtime.RealTimeActivity
 import com.boringkm.imageclassification.view.realtime.RealTimeWithXmlActivity
 
 class MainActivity : ComponentActivity() {

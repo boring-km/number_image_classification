@@ -35,7 +35,6 @@ import javax.inject.Inject
 @HiltViewModel
 class RealTimeViewModel @Inject constructor(private val model: ClassifierWithModel, application: Application) : AndroidViewModel(application) {
 
-    var frameLayoutId = MutableLiveData(0)
     private var cls: ClassifierWithModel? = null
     var resultText = MutableLiveData("")
         private set
@@ -150,10 +149,10 @@ class RealTimeViewModel @Inject constructor(private val model: ClassifierWithMod
         if (inputSize.width > 0 && inputSize.height > 0 && cameraId!!.isNotEmpty()) {
             val fragment = CameraFragment.newInstance(
                 object : CameraFragment.ConnectionCallback{
-                    override fun onPreviewSizeChosen(size: Size, rotation: Int) {
+                    override fun onPreviewSizeChosen(size: Size, cameraRotation: Int) {
                         previewWidth = size.width
                         previewHeight = size.height
-                        sensorOrientation = rotation - getScreenOrientation(activity)
+                        sensorOrientation = cameraRotation - getScreenOrientation(activity)
                     }
 
                 },
@@ -167,6 +166,7 @@ class RealTimeViewModel @Inject constructor(private val model: ClassifierWithMod
             )
 
             // TODO Compose 안에서 Fragment 띄우기: https://medium.com/mobile-app-development-publication/load-fragments-in-jetpack-compose-beyond-what-google-taught-356a7981268d
+            @Suppress("DEPRECATION")
             activity.fragmentManager.beginTransaction().replace(
                 R.id.fragment, fragment
             ).commit()
