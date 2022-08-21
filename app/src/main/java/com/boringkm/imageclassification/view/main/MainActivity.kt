@@ -28,6 +28,7 @@ import com.boringkm.imageclassification.ui.theme.ImageClassificationTheme
 import com.boringkm.imageclassification.view.camera.CameraActivity
 import com.boringkm.imageclassification.view.gallery.GalleryActivity
 import com.boringkm.imageclassification.view.realtime.RealTimeActivity
+import com.boringkm.imageclassification.view.realtime.RealTimeWithXmlActivity
 
 class MainActivity : ComponentActivity() {
 
@@ -49,7 +50,7 @@ class MainActivity : ComponentActivity() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
                 Log.i("MainActivity", "PERMISSION GRANTED")
-                startActivity(Intent(this@MainActivity, RealTimeActivity::class.java))
+                startActivity(Intent(this@MainActivity, RealTimeWithXmlActivity::class.java))
             } else {
                 ActivityCompat.requestPermissions(
                     this, arrayOf(Manifest.permission.CAMERA),

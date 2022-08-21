@@ -1,7 +1,5 @@
 package com.boringkm.imageclassification.view.realtime
 
-import android.Manifest
-import android.R
 import android.app.Activity
 import android.app.Application
 import android.content.Context
@@ -10,25 +8,23 @@ import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.media.ImageReader
-import android.net.Uri
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
 import android.util.Size
 import android.view.Surface
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.result.ActivityResultLauncher
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.boringkm.imageclassification.ImageClassificationApp
+import com.boringkm.imageclassification.R
 import com.boringkm.imageclassification.tflite.ClassifierWithModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -101,7 +97,7 @@ class RealTimeViewModel @Inject constructor(private val model: ClassifierWithMod
         }
     }
 
-    fun processImage(reader: ImageReader) {
+    private fun processImage(reader: ImageReader, textView: TextView) {
         if (previewWidth == 0 || previewHeight == 0) {
             return
         }
@@ -131,11 +127,13 @@ class RealTimeViewModel @Inject constructor(private val model: ClassifierWithMod
             if (cls != null && cls!!.isInitialized) {
                 val output = cls!!.classify(rgbFrameBitmap!!, sensorOrientation)
 
-                resultText.value = String.format(
-                    Locale.ENGLISH,
-                    "class : %s, prob : %.2f%%",
-                    output.first, output.second * 100
-                )
+                CoroutineScope(Dispatchers.Main).launch {
+                    textView.text = String.format(
+                        Locale.ENGLISH,
+                        "class : %s, prob : %.2f%%",
+                        output.first, output.second * 100
+                    )
+                }
             }
             image.close()
             isProcessingFrame = false
@@ -143,10 +141,10 @@ class RealTimeViewModel @Inject constructor(private val model: ClassifierWithMod
     }
 
     private fun runInBackground(r: Runnable) {
-        handler.let { it!!.post(r) }
+        handler?.post(r)
     }
 
-    fun setFragment(activity: ComponentActivity) {
+    private fun setFragment(activity: ComponentActivity) {
         val inputSize: Size = cls!!.getModelInputSize()
         val cameraId = chooseCamera()
         if (inputSize.width > 0 && inputSize.height > 0 && cameraId!!.isNotEmpty()) {
@@ -159,19 +157,19 @@ class RealTimeViewModel @Inject constructor(private val model: ClassifierWithMod
                     }
 
                 },
-                { reader -> processImage(reader) },
+                { reader -> processImage(reader, activity.findViewById(R.id.textView)) },
                 inputSize,
                 cameraId
             )
             Log.d(
                 TAG, "inputSize : " + cls!!.getModelInputSize() +
-                        "sensorOrientation : " + sensorOrientation
+                        "\nsensorOrientation : " + sensorOrientation
             )
 
             // TODO Compose 안에서 Fragment 띄우기: https://medium.com/mobile-app-development-publication/load-fragments-in-jetpack-compose-beyond-what-google-taught-356a7981268d
-//            activity.fragmentManager.beginTransaction().replace(
-//                frameLayoutId.value!!, fragment
-//            ).commit()
+            activity.fragmentManager.beginTransaction().replace(
+                R.id.fragment, fragment
+            ).commit()
         } else {
             Toast.makeText(activity.applicationContext, "Can't find camera", Toast.LENGTH_SHORT).show()
         }

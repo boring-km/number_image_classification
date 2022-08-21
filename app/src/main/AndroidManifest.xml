@@ -33,6 +33,10 @@
         <activity android:name=".view.gallery.GalleryActivity" />
         <activity android:name=".view.camera.CameraActivity" />
         <activity android:name=".view.realtime.RealTimeActivity"/>
+        <activity android:name=".view.realtime.RealTimeWithXmlActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
